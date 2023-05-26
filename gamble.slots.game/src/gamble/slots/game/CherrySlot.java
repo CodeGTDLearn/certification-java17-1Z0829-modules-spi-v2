@@ -13,6 +13,7 @@ public class CherrySlot {
 
     new CherrySlot().playGame();
   }
+
   private void playGame() {
     //    var defaultProvider = "gamble.slots.impl";
     //    PayOffServiceSPI service = getLastService();
@@ -24,11 +25,14 @@ public class CherrySlot {
       service.threeInRow(PayOffServiceSPI.SlotType.GOLDBAR_ONE);
     }
   }
+
   private PayOffServiceSPI getLastService_ForEach() {
+
     List<PayOffServiceSPI> services = new ArrayList<>();
     final PayOffServiceSPI lastService;
 
-    ServiceLoader.load(PayOffServiceSPI.class).forEach(services::add);
+    ServiceLoader.load(PayOffServiceSPI.class)
+                 .forEach(services::add);
 
     if (services.size() > 0) {
       lastService = services.get(services.size() - 1);
@@ -36,7 +40,9 @@ public class CherrySlot {
     }
     return null;
   }
+
   private PayOffServiceSPI getServiceByDomain_Stream(String servicePackageDomain) {
+
     List<PayOffServiceSPI> services =
          ServiceLoader.load(PayOffServiceSPI.class)
                       .stream()
@@ -46,11 +52,31 @@ public class CherrySlot {
     Optional<PayOffServiceSPI> provider =
          services.stream()
                  .filter((s) -> s.getClass()
-                               .getName()
-                               .contains(servicePackageDomain)).findFirst();
+                                 .getName()
+                                 .contains(servicePackageDomain))
+                 .findFirst();
 
     if (provider.isEmpty()) {
       return services.stream()
                      .findFirst()
                      .orElse(null);
-    } else return provider.get();      }}
+    } else return provider.get();
+
+  }
+
+  private PayOffServiceSPI getServiceByDomain_Stream2(String servicePackageDomain) {
+
+    return
+         ServiceLoader
+              .load(PayOffServiceSPI.class)
+              .stream()
+              .map(ServiceLoader.Provider::get)
+              .collect(Collectors.toList())
+              .stream()
+              .filter((s) -> s.getClass()
+                              .getName()
+                              .contains(servicePackageDomain))
+              .findFirst()
+              .orElse(null);
+  }
+}

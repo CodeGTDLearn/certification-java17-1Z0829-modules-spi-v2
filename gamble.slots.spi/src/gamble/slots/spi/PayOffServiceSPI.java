@@ -1,7 +1,6 @@
 package gamble.slots.spi;
 
 public interface PayOffServiceSPI {
-
   enum SlotType {
     FRUIT,
     JACKPOT,
@@ -11,8 +10,5 @@ public interface PayOffServiceSPI {
   }
 
   public void hitTheJackPot();
-
   public void threeInRow(SlotType s);
-
-  public void twoInRow(SlotType s);
-}
+  public void twoInRow(SlotType s);  }
